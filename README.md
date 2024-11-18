@@ -5,4 +5,5 @@
 -python TD3.py
 -python PPO.py
 # Cargar modelo entrenado
+-python test.py --model ppo_reacher_model
 -python test.py --model td3_reacher_model
