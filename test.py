@@ -1,35 +1,50 @@
+import argparse
 import gymnasium as gym
-from stable_baselines3 import PPO
-from stable_baselines3.ppo.policies import MlpPolicy
 
-# Crear el entorno Reacher-v5
-env = gym.make('Reacher-v5', render_mode='human')
+def load_and_test_model(model_name, render_mode="human"):
+    """
+    Carga y prueba un modelo entrenado en el entorno Reacher-v5.
 
-# Crear el modelo PPO con la política de red neuronal MLP
-##model = PPO(MlpPolicy, env, verbose=1)
+    Args:
+        model_name (str): Nombre del modelo a cargar (incluye el tipo de modelo y la ruta).
+    """
+    # Crear el entorno
+    env_name = "Reacher-v5"
+    env = gym.make(env_name, render_mode=render_mode)
 
-# Entrenar el modelo
-##model.learn(total_timesteps=10000000)  # Número de pasos de entrenamiento
+    # Determinar cómo cargar el modelo según su tipo o nombre
+    print(f"Cargando el modelo: {model_name}...")
 
-# Guardar el modelo entrenado
-##model.save("ppo_reacher_model")  # Guarda el modelo en el archivo "ppo_reacher_model"
+    # Ejemplo: Detectar tipo de modelo 
+    if "ppo" in model_name.lower():
+        from stable_baselines3 import PPO
+        model = PPO.load(model_name)
+    elif "td3" in model_name.lower():
+        from stable_baselines3 import TD3
+        model = TD3.load(model_name)
+    else:
+        # Lógica personalizada para otros modelos
+        raise ValueError(f"No hay soporte para el modelo especificado: {model_name}")
 
-# Cargar el modelo entrenado desde el archivo
-model = PPO.load("ppo_reacher_model")
+    # Iniciar la simulación
+    obs, info = env.reset()
+    done = False
 
-# Reiniciar el entorno
-obs, info = env.reset()
+    while not done:
+        env.render()
 
-done = False
-while not done:
-    # Renderizar el entorno en pantalla
-    env.render()
+        # Predecir la acción con el modelo cargado
+        action, _ = model.predict(obs)
+        obs, reward, done, truncated, info = env.step(action)
 
-    # Usar el modelo cargado para predecir la siguiente acción
-    action, _states = model.predict(obs)
+    env.close()
+    print("Prueba finalizada con éxito.")
 
-    # Realizar un paso en el entorno usando la acción predicha por el modelo
-    obs, reward, done, truncated, info = env.step(action)
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Prueba un modelo entrenado en el entorno Reacher-v5.")
+    parser.add_argument("--model", type=str, required=True, help="Ruta al modelo a cargar.")
 
-# Cerrar el entorno al finalizar
-env.close()
+    args = parser.parse_args()
+
+    # Llamar a la función para cargar y probar el modelo
+    load_and_test_model(args.model)
