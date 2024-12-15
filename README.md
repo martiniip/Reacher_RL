@@ -2,6 +2,7 @@
 
 # entrenar un modelo
 -python TD3.py pusher | reacher
+
 -python PPO.py pusher | reacher
 
 
