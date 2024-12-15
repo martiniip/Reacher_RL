@@ -9,8 +9,8 @@ def train_td3(env_name, total_timesteps, model_path, log_dir, log_name):
     # Crear el entorno
     env = Monitor(gym.make(env_name))
 
-    # Crear el modelo TD3 con registro a TensorBoard
-    model = TD3(MlpPolicy, env, verbose=1, tensorboard_log=log_dir)
+    # Crear el modelo TD3 con registro a TensorBoard, configurando el dispositivo a 'cuda'
+    model = TD3(MlpPolicy, env, verbose=1, tensorboard_log=log_dir, device="cuda")
 
     # Entrenar el modelo
     model.learn(total_timesteps=total_timesteps, tb_log_name=log_name)
@@ -41,7 +41,7 @@ if __name__ == "__main__":
     env_name = env_map[env_short_name]
 
     # Definir parámetros de entrenamiento
-    total_timesteps = 1000
+    total_timesteps = 5000000
     model_path = f"td3_{env_short_name}_model"
 
     # Crear el directorio de registro según el modelo y el entorno

@@ -41,7 +41,7 @@ if __name__ == "__main__":
     env_name = env_map[env_short_name]
 
     # Definir parámetros de entrenamiento
-    total_timesteps = 10000
+    total_timesteps = 5000000
     model_path = f"ppo_{env_short_name}_model"
 
     # Crear el directorio de registro según el modelo y el entorno
