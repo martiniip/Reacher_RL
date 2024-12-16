@@ -11,6 +11,6 @@
 
 - python test.py --model td3_reacher_model
 
-- python test.py --model ppo_reacher_model
+- python test.py --model ppo_pusher_model
 
-- python test.py --model td3_reacher_model
+- python test.py --model td3_pusher_model
