@@ -17,5 +17,7 @@
 
 # Visualizar logs de TensorBoard
 - tensorboard --logdir=(ruta_de_la_carpeta)
+
+
 Por ejemplo para PPO:
 - tensorboard --logdir=./ppo_logs/
